@@ -1017,6 +1017,9 @@ class DictionaryWindow(QMainWindow):
         content = {
             "deckName": self.settings.value("deck_name"),
             "modelName": self.settings.value("note_type"),
+            "options": {
+                "allowDuplicate": True
+            },
             "fields": {
                 self.settings.value("sentence_field"): sentence,
                 self.settings.value("word_field"): word,
