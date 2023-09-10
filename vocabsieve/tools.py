@@ -15,7 +15,7 @@ from .dictionary import *
 from .dictformats import *
 from .xdxftransform import xdxf2html
 from sentence_splitter import split_text_into_sentences, SentenceSplitterException
-from PyQt5.QtCore import QCoreApplication
+from PyQt6.QtCore import QCoreApplication
 import mobi
 from itertools import islice
 from lxml import etree

@@ -1,5 +1,5 @@
 import sqlite3
-from PyQt5.QtCore import QStandardPaths, QCoreApplication
+from PyQt6.QtCore import QStandardPaths, QCoreApplication
 from os import path
 from pathlib import Path
 import time
@@ -11,7 +11,7 @@ import unicodedata
 import simplemma
 from .lemmatizer import lem_word
 
-datapath = QStandardPaths.writableLocation(QStandardPaths.DataLocation)
+datapath = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
 Path(datapath).mkdir(parents=True, exist_ok=True)
 print(datapath)
 

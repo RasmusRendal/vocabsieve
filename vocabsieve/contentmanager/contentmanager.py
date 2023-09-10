@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
 from bidict import bidict
 from operator import itemgetter
 from .dialog import AddContentDialog
@@ -50,7 +50,7 @@ class ContentManager(QDialog):
     def onAddFile(self):
         path, _ = QFileDialog.getOpenFileName(
                 self, "Choose a file to import", 
-                QStandardPaths.writableLocation(QStandardPaths.HomeLocation), 
+                QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation), 
                 "Files (*.epub *.fb2 *.mobi *.html *.azw *.azw3 *.kfx *.srt *.vtt *.ass)"
                 )
         if path:
@@ -76,7 +76,7 @@ class ContentManager(QDialog):
     def onAddFolder(self):
         path = QFileDialog.getExistingDirectory(
                 self, "Choose a folder to import", 
-                QStandardPaths.writableLocation(QStandardPaths.HomeLocation), 
+                QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation), 
                 )
         if path:
             AddContentDialog(self, path).exec()

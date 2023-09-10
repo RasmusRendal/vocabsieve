@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import Qt
 import platform
 import qdarktheme
 from shutil import rmtree
@@ -105,9 +105,9 @@ class SettingsDialog(QDialog):
         self.custom_url.setEnabled(False)
 
         self.orientation = QComboBox()
-        self.text_scale = QSlider(Qt.Horizontal)
+        self.text_scale = QSlider(Qt.Orientation.Horizontal)
 
-        self.text_scale.setTickPosition(QSlider.TicksBelow)
+        self.text_scale.setTickPosition(QSlider.TickPosition.TicksBelow)
         self.text_scale.setTickInterval(10)
         self.text_scale.setSingleStep(5)
         self.text_scale.setValue(100)
@@ -307,7 +307,7 @@ class SettingsDialog(QDialog):
             self.close()
 
     def nuke_profile(self):
-        datapath = QStandardPaths.writableLocation(QStandardPaths.DataLocation)
+        datapath = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
         answer = QMessageBox.question(
             self,
             "Confirm Reset",

@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
 from .dictionary import *
 from .tools import *
 from .dictformats import supported_dict_formats, dictinfo
@@ -86,7 +86,7 @@ to be reimported, otherwise this operation will fail.\
 
     def onAdd(self):
         fdialog = QFileDialog()
-        fdialog.setFileMode(QFileDialog.ExistingFile)
+        fdialog.setFileMode(QFileDialog.FileMode.ExistingFile)
         fdialog.setNameFilter("Dictionary files (*.json *.ifo *.mdx *.dsl *.dsl.dz *.csv *.tsv *.json.xz *.json.bz2 *.json.gz)")
         fdialog.exec()
         if fdialog.selectedFiles() == []:
@@ -100,7 +100,7 @@ to be reimported, otherwise this operation will fail.\
     def onAddAudio(self):
         folder = QFileDialog.getExistingDirectory(
             self, "Select sound library", QStandardPaths.writableLocation(
-                QStandardPaths.HomeLocation), QFileDialog.ShowDirsOnly)
+                QStandardPaths.StandardLocation.HomeLocation), QFileDialog.ShowDirsOnly)
         if not folder:
             return
         dialog = AddDictDialog(self, folder, True)

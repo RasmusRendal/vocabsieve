@@ -1,7 +1,6 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.Qt import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
 import re
 import json
 from vocabsieve.tools import addNotes
@@ -73,7 +72,7 @@ class GenericImporter(QDialog):
 
         self.preview_widget = BatchNotePreviewer()
         self.preview_widget.setMinimumHeight(300)
-        self.preview_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.preview_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.layout.addRow(QLabel("Preview cards"), self.preview_widget)
         self.layout.addRow(self.progressbar)
         self.layout.addRow(self.definition_count_label, self.anki_button)

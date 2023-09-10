@@ -1,6 +1,6 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 from operator import itemgetter
 from pyqtgraph import PlotWidget, BarGraphItem, PlotItem, AxisItem, mkPen
 from datetime import timedelta, datetime
@@ -109,7 +109,7 @@ class StatisticsWindow(QDialog):
         #self.lookupStats.layout.addWidget(QLabel(f"Count of words looked up in the last 30 days: {n_words_looked_up}"))
         # Draw bar chart with pyqtgraph
         self.lookups_plotwidget = PlotWidget()
-        bgcolor = self.palette().color(QPalette.Background)
+        bgcolor = self.palette().color(QPalette.ColorRole.Base)
         self.lookups_plotwidget.setBackground(bgcolor)
         self.lookupStats.layout.addWidget(self.lookups_plotwidget)
         bar = BarGraphItem(x=[-i for i in range(31)], height=n_words_looked_up, width=1, brush='#4e79a7')

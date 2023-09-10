@@ -1,7 +1,7 @@
 import time
 import json
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
 from .tools import *
 
 last_known_data = None
@@ -93,7 +93,7 @@ def _getKnownData(settings, rec):
             young_notes = [note for note in young_notes if note not in mature_notes]
             n_mature = len(mature_notes)
             progress = QProgressDialog("Computing Anki data...", None, 0, n_mature+len(young_notes), None)
-            progress.setWindowModality(Qt.WindowModal)  
+            progress.setWindowModality(Qt.WindowModality.WindowModal)
             print("Got anki data from AnkiConnect in", time.time() - start, "seconds")
             start = time.time()
             mature_notes_info = notesInfo(anki_api, mature_notes)

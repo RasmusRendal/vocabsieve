@@ -9,9 +9,9 @@ from typing import Optional
 import requests
 from markdown import markdown
 from packaging import version
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 import qdarktheme
 
 
@@ -54,7 +54,7 @@ class DictionaryWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle(app_title(True))
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.widget = QWidget()
         self.settings = settings
         self.audio_fetched.connect(self.updateAudioUI)
@@ -196,13 +196,13 @@ class DictionaryWindow(QMainWindow):
         self.freq_display = QLineEdit()
         self.freq_display.setPlaceholderText("Word frequency")
         self.freq_display_lcd = QLCDNumber()
-        self.freq_display_lcd.setSegmentStyle(QLCDNumber.Flat)
+        self.freq_display_lcd.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
         self.freq_display_lcd.display(0)
 
         self.audio_selector = QListWidget()
         self.audio_selector.setMinimumHeight(50)
-        self.audio_selector.setFlow(QListView.TopToBottom)
-        self.audio_selector.setResizeMode(QListView.Adjust)
+        self.audio_selector.setFlow(QListView.Flow.TopToBottom)
+        self.audio_selector.setResizeMode(QListView.ResizeMode.Adjust)
         self.audio_selector.setWrapping(True)
 
         self.audio_selector.currentItemChanged.connect(lambda x: (
@@ -228,7 +228,7 @@ class DictionaryWindow(QMainWindow):
 
         self.image_viewer = QLabel("<center><b>&lt;No image selected&gt;</center>")
         self.image_viewer.setScaledContents(True)
-        self.image_viewer.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.image_viewer.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
         self.image_viewer.setStyleSheet(
             '''
                 border: 1px solid black;
@@ -401,7 +401,7 @@ class DictionaryWindow(QMainWindow):
             parent=self,
             caption="Select book",
             filter="Ebook files (*.epub *.fb2 *.mobi *.html *.azw *.azw3 *.kfx)",
-            directory=QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
+            directory=QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
             )[0]
         if path:
             BookAnalyzer(self, path).open()
@@ -411,7 +411,7 @@ class DictionaryWindow(QMainWindow):
             self,
             "Save known words to JSON file",
             os.path.join(
-                QStandardPaths.writableLocation(QStandardPaths.DesktopLocation),
+                QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DesktopLocation),
                 f"vocabsieve-known-words-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.json"
             ),
             "JSON (*.json)"
@@ -431,7 +431,7 @@ class DictionaryWindow(QMainWindow):
             self,
             "Save word scores to JSON file",
             os.path.join(
-                QStandardPaths.writableLocation(QStandardPaths.DesktopLocation),
+                QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DesktopLocation),
                 f"vocabsieve-word-scores-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.json"
             ),
             "JSON (*.json)"
@@ -461,7 +461,7 @@ class DictionaryWindow(QMainWindow):
             self,
             "Save CSV to file",
             os.path.join(
-                QStandardPaths.writableLocation(QStandardPaths.DesktopLocation),
+                QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DesktopLocation),
                 f"vocabsieve-notes-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.csv"
             ),
             "CSV (*.csv)"
@@ -485,7 +485,7 @@ class DictionaryWindow(QMainWindow):
             self,
             "Save CSV to file",
             os.path.join(
-                QStandardPaths.writableLocation(QStandardPaths.DesktopLocation),
+                QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DesktopLocation),
                 f"vocabsieve-lookups-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.csv"
             ),
             "CSV (*.csv)"
@@ -617,7 +617,7 @@ class DictionaryWindow(QMainWindow):
             parent=self,
             caption="Select book or text file",
             filter="Book, text files (*.epub *.fb2 *.mobi *.html *.azw *.azw3 *.kfx *.txt)",
-            directory=QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
+            directory=QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
             )[0]
         if path:
             AutoTextImporter(self, path).exec()
@@ -626,7 +626,7 @@ class DictionaryWindow(QMainWindow):
         path = QFileDialog.getExistingDirectory(
             parent=self,
             caption="Select a directory containing KOReader settings and ebook files",
-            directory=QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
+            directory=QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
         )
         if not path:
             return
@@ -642,7 +642,7 @@ class DictionaryWindow(QMainWindow):
         path = QFileDialog.getExistingDirectory(
             parent=self,
             caption="Select a directory containing KOReader settings and ebook files",
-            directory=QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
+            directory=QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
         )
         if not path:
             return
@@ -1236,7 +1236,7 @@ class AboutDialog(QDialog):
             f'''
 VocabSieve version: {__version__}<br>
 Python version: {sys.version}<br>
-PyQt5 (Qt bindings) version: {QT_VERSION_STR}, Qt {PYQT_VERSION_STR}<br><br>
+PyQt6 (Qt bindings) version: {QT_VERSION_STR}, Qt {PYQT_VERSION_STR}<br><br>
 © 2022 FreeLanguageTools<br><br>
 Visit <a href="https://wiki.freelanguagetools.org">FreeLanguageTools Wiki</a> for more info on how to use this tool.<br>
 You can also talk to us on <a href="https://webchat.kde.org/#/room/#flt:midov.pl">Matrix</a>

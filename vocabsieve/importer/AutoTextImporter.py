@@ -4,7 +4,7 @@ from datetime import datetime as dt, timezone as tz
 import sqlite3
 import os
 import re
-from PyQt5.QtWidgets import QCheckBox, QLabel
+from PyQt6.QtWidgets import QCheckBox, QLabel
 from ..known_words import getKnownWords
 from typing import Tuple, Dict, Set
 from ..lemmatizer import lem_word, lem_pre
