@@ -11,7 +11,8 @@ from bidict import bidict
 from bs4 import BeautifulSoup
 from markdown import markdown
 from markdownify import markdownify
-from .playsound import playsound
+from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PyQt6.QtCore import QUrl
 from .constants import DefinitionDisplayModes, LookUpResults
 from .db import *
 from .dictformats import removeprefix
@@ -41,6 +42,14 @@ gdict_languages = [
 
 pronunciation_sources = ["Forvo (all)", "Forvo (best)"]
 
+player = QMediaPlayer()
+out = QAudioOutput()
+out.setVolume(100);
+player.setAudioOutput(out)
+
+def playsound(sound):
+    player.setSource(QUrl.fromLocalFile(sound))
+    player.play()
 
 
 def preprocess_clipboard(s: str, lang: str, should_convert_to_uppercase: bool = False) -> str:
@@ -268,7 +277,7 @@ forvopath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.Standard
 
 def play_audio(name: str, data: Dict[str, str], lang: str) -> str:
     def crossplatform_playsound(relative_audio_path: str):
-        Thread(target=lambda: playsound(relative_audio_path)).start()
+        playsound(relative_audio_path)
 
     audiopath: str = data.get(name, "")
     if not audiopath:
