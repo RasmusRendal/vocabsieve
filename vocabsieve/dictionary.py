@@ -263,7 +263,7 @@ def getFreqlistsForLang(lang: str, dicts: list):
             for item in dicts if item['lang'] == lang and item['type'] == "freq"]
 
 
-forvopath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.DataLocation), "forvo")
+forvopath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation), "forvo")
 
 
 def play_audio(name: str, data: Dict[str, str], lang: str) -> str:

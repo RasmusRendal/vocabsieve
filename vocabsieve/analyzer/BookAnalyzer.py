@@ -1,6 +1,6 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 import os
 from operator import itemgetter
 from ..tools import *
@@ -94,7 +94,7 @@ class BookAnalyzer(QDialog):
 
         self.plotwidget_words = PlotWidget()
         self.plotwidget_words.setTitle("Unique unknown words per " + str(1000) + " words")
-        bgcolor = self.parent.palette().color(QPalette.Background)
+        bgcolor = self.parent.palette().color(QPalette.ColorRole.Base)
         self.plotwidget_words.setBackground(bgcolor)
         self.plotwidget_words.addLegend()
 
@@ -108,7 +108,7 @@ class BookAnalyzer(QDialog):
         learning_rate_box = QWidget()
         learning_rate_box.layout = QHBoxLayout(learning_rate_box)
         learning_rate_box.layout.addWidget(QLabel("Learning rate: "))
-        self.learning_rate_slider = QSlider(Qt.Horizontal)
+        self.learning_rate_slider = QSlider(Qt.Orientation.Horizontal)
         self.learning_rate_slider.setMinimum(0)
         self.learning_rate_slider.setMaximum(100)
         self.learning_rate_slider.setValue(40)

@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
 from ..constants import LookUpResults
 from .utils import *
 
@@ -11,7 +11,7 @@ class BatchNotePreviewer(QTextEdit):
         self.note_items = []
         self.setReadOnly(True)
         self.currentIndex = 0
-        self.layout.setAlignment(Qt.AlignBottom)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
         buttons_box_widget = QWidget()
         self.layout.addWidget(buttons_box_widget)
         buttons_box_layout = QHBoxLayout(buttons_box_widget)
@@ -19,7 +19,7 @@ class BatchNotePreviewer(QTextEdit):
         first_button = QPushButton("<<")
         prev_button = QPushButton("<")
         self.counter = QLabel("0/0")
-        self.counter.setAlignment(Qt.AlignCenter)
+        self.counter.setAlignment(Qt.AlignmentFlag.AlignCenter)
         next_button = QPushButton(">")
         last_button = QPushButton(">>")
         buttons_box_layout.addWidget(first_button)

@@ -1,5 +1,5 @@
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
 from .searchable_text_edit import SearchableTextEdit
 from ..text_manipulation import *
 from ..app_text import settings_app_title, app_organization

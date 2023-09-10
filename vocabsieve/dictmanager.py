@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
 from .dictionary import *
 from .tools import *
 from .dictformats import supported_dict_formats, dictinfo
@@ -100,7 +100,7 @@ to be reimported, otherwise this operation will fail.\
     def onAddAudio(self):
         folder = QFileDialog.getExistingDirectory(
             self, "Select sound library", QStandardPaths.writableLocation(
-                QStandardPaths.HomeLocation), QFileDialog.ShowDirsOnly)
+                QStandardPaths.StandardLocation.HomeLocation), QFileDialog.ShowDirsOnly)
         if not folder:
             return
         dialog = AddDictDialog(self, folder, True)
