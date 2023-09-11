@@ -47,7 +47,11 @@ out = QAudioOutput()
 out.setVolume(100);
 player.setAudioOutput(out)
 
-def playsound(sound):
+def playsound(sound: str):
+    # Due to weird bugs I experienced, I found it the easiest to just
+    # make sure that I was completery reloading the audiofile for every
+    # playback.
+    player.setSource(QUrl())
     player.setSource(QUrl.fromLocalFile(sound))
     player.play()
 
@@ -276,15 +280,12 @@ forvopath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.Standard
 
 
 def play_audio(name: str, data: Dict[str, str], lang: str) -> str:
-    def crossplatform_playsound(relative_audio_path: str):
-        playsound(relative_audio_path)
-
     audiopath: str = data.get(name, "")
     if not audiopath:
-        return ""
+        raise FileNotFoundError("Tried to play non-existing audio file")
 
     if not audiopath.startswith("https://"):
-        crossplatform_playsound(audiopath)
+        playsound(audiopath)
         return audiopath
 
     fpath = os.path.join(forvopath, lang, name) + audiopath[-4:]
@@ -292,14 +293,13 @@ def play_audio(name: str, data: Dict[str, str], lang: str) -> str:
         res = requests.get(audiopath, headers=HEADERS)
 
         if res.status_code != 200:
-            # /TODO: Maybe display error to the user?
-            return ""
+            res.raise_for_status()
         
         os.makedirs(os.path.dirname(fpath), exist_ok=True)
         with open(fpath, 'bw') as file:
             file.write(res.content)
     
-    crossplatform_playsound(fpath)
+    playsound(fpath)
     return fpath
 
 

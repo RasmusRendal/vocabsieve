@@ -205,7 +205,7 @@ class DictionaryWindow(QMainWindow):
         self.audio_selector.setResizeMode(QListView.ResizeMode.Adjust)
         self.audio_selector.setWrapping(True)
 
-        self.audio_selector.currentItemChanged.connect(lambda x: (
+        self.audio_selector.itemPressed.connect(lambda x: (
             self.play_audio(x.text()[2:]) if x is not None else None
         ))
 
@@ -865,6 +865,7 @@ class DictionaryWindow(QMainWindow):
             for item in self.audios:
                 self.audio_selector.addItem("🔊 " + item)
             self.audio_selector.setCurrentItem(self.audio_selector.item(0))
+            self.play_audio(self.audio_selector.item(0).text()[2:])
 
     def fetchAudioInBackground(self, word):
         try:
