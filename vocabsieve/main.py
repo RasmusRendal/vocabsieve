@@ -4,6 +4,7 @@ import importlib
 import os
 import platform
 import sys
+import traceback
 from datetime import datetime
 from typing import Optional
 import requests
@@ -94,6 +95,14 @@ class DictionaryWindow(QMainWindow):
         if not self.settings.value("internal/configured"):
             self.configure()
             self.settings.setValue("internal/configured", True)
+
+    def displayException(self, message, e):
+        box = QMessageBox(self);
+        box.setWindowTitle("Something went wrong")
+        box.setIcon(QMessageBox.Icon.Warning)
+        box.setText(message)
+        box.setDetailedText("\n".join(traceback.format_exception(e)))
+        box.open()
 
     def scaleFont(self) -> None:
         font = QApplication.font()
@@ -652,7 +661,7 @@ class DictionaryWindow(QMainWindow):
             QMessageBox.warning(self, "No notes are found",
                 "Check if you've picked the right directory. It should be a folder containing both all of your books and KOReader settings.")
         except Exception as e:
-            QMessageBox.warning(self, "Something went wrong", "Error: "+repr(e))
+            self.displayException("Error when importing", e)
 
 
     def repeatLastImport(self):
@@ -676,7 +685,7 @@ class DictionaryWindow(QMainWindow):
                 QMessageBox.warning(self, "You have not imported notes before",
                     "Use any one of the other two options on the menu, and you will be able to use this one next time.")
         except Exception as e:
-            print("Encountered error while repeating last import, aborting:", repr(e))
+            self.displayException("Error when importing", e)
 
     def setupShortcuts(self) -> None:
         self.shortcut_toanki = QShortcut(QKeySequence('Ctrl+S'), self)

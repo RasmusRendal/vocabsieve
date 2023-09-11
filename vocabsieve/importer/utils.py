@@ -38,6 +38,8 @@ def findDBpath(path):
         + glob.glob(os.path.join(path, ".*/**/vocabulary_builder.sqlite3"), recursive=True)
     if paths:
         return paths[0]
+    else:
+        raise FileNotFoundError("Could not find database in import directory. Please verify that you selected the correct directory.")
 
 def koreader_scandir(path):
     filelist = []
