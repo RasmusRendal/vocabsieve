@@ -47,10 +47,19 @@ class GenericImporter(QDialog):
         self.src_selector.layout = QVBoxLayout(self.src_selector)
         self.layout.addRow(QLabel("<h3>Select books to extract highlights from</h3>"))
 
+        self.note_actions = QWidget(self)
+        self.note_actions.layout = QHBoxLayout(self.note_actions)
+
+        self.delete_notes_button = QPushButton("Clear selected notes")
+        self.delete_notes_button.clicked.connect(self.deleteNotes)
+        self.note_actions.layout.addWidget(self.delete_notes_button)
+
         self.lookup_button = QPushButton("Look up currently selected")
         self.lookup_button.clicked.connect(self.defineWords)
         self.lookup_button.setEnabled(False)
-    
+        self.note_actions.layout.addWidget(self.lookup_button)
+
+
         for book_name in set(self.orig_book_names):
             self.src_checkboxes.append(
                 QCheckBox(truncate_middle(book_name, 90)))
@@ -62,7 +71,7 @@ class GenericImporter(QDialog):
         self.layout.addRow(self.src_selector_scrollarea)
         self.layout.addRow("Use notes starting from: ", self.datewidget)
         self.notes_count_label = QLabel()
-        self.layout.addRow(self.notes_count_label, self.lookup_button)
+        self.layout.addRow(self.notes_count_label, self.note_actions)
         self.progressbar = QProgressBar()
         self.progressbar.setMinimum(0)
         self.definition_count_label = QLabel()
@@ -83,6 +92,21 @@ class GenericImporter(QDialog):
             pass
 
 
+    def deleteNotes(self):
+        """
+        Deletes the notes from the selected source, that are in the books selected
+
+        :raises NotImplementedError
+        """
+        raise NotImplementedError("Should be implemented by subclass")
+
+    def get_selected_book_names(self):
+        selected_book_names = []
+        for checkbox in self.src_checkboxes:
+            if checkbox.isChecked():
+                selected_book_names.append(checkbox.text())
+        return selected_book_names
+
 
     def getNotes(self):
         """
@@ -96,10 +120,7 @@ class GenericImporter(QDialog):
 
     def updateHighlightCount(self):
         start_date = self.datewidget.currentText()
-        selected_book_names = []
-        for checkbox in self.src_checkboxes:
-            if checkbox.isChecked():
-                selected_book_names.append(checkbox.text())
+        selected_book_names = self.get_selected_book_names()
         self.selected_highlight_items = self.filterHighlights(start_date, selected_book_names, self.notes)
         if self.selected_highlight_items:
             self.lookup_button.setEnabled(True)

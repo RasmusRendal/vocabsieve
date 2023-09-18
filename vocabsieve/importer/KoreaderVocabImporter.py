@@ -28,6 +28,24 @@ class KoreaderVocabImporter(GenericImporter):
     def __init__(self, parent, path):
         super().__init__(parent, "KOReader vocab builder", path, "koreader-vocab")
 
+    def deleteNotes(self):
+        selected_book_names = self.get_selected_book_names()
+        selected_book_ids = []
+        for name in selected_book_names:
+            for bookid, bookname in self.bookmap.items():
+                if bookname == name:
+                    selected_book_ids.append(bookid)
+
+        self.dbpath = findDBpath(self.path)
+        con = sqlite3.connect(self.dbpath)
+        cur = con.cursor()
+        for bookid in selected_book_ids:
+            for res in cur.execute(f"DELETE FROM vocabulary WHERE title_id='{ bookid }'"):
+                print(res)
+        con.commit()
+        con.close()
+
+
     def getNotes(self):
         bookfiles = koreader_scandir(self.path)
         langcode = self.parent.settings.value("target_language", "en")
@@ -43,16 +61,16 @@ class KoreaderVocabImporter(GenericImporter):
         count = 0
         success_count = 0
 
-        bookmap = {}
+        self.bookmap = {}
 
         for bookid, bookname in cur.execute("SELECT id, name FROM title"):
             if bookname in books_in_lang:
-                bookmap[bookid] = bookname
+                self.bookmap[bookid] = bookname
 
         items = []
         for timestamp, word, title_id, prev_context, next_context in cur.execute("SELECT create_time, word, title_id, prev_context, next_context FROM vocabulary"):
             #print(word, title_id)
-            if title_id in bookmap:
+            if title_id in self.bookmap:
                 if prev_context and next_context:
                     ctx = prev_context + word + next_context
                 else:
@@ -63,7 +81,7 @@ class KoreaderVocabImporter(GenericImporter):
                         sentence = sentence_
                 if sentence:
                     count += 1
-                    items.append((word, sentence, str(dt.fromtimestamp(timestamp).astimezone())[:19], bookmap[title_id]))
+                    items.append((word, sentence, str(dt.fromtimestamp(timestamp).astimezone())[:19], self.bookmap[title_id]))
 
         self.layout.addRow(QLabel("Vocabulary database: " + self.dbpath))
         self.layout.addRow(QLabel(f"Found {count} notes in Vocabulary Builder in language '{langcode}'"))
