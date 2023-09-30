@@ -6,6 +6,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from slpp import slpp
+import traceback
 
 from .GenericImporter import GenericImporter
 from .utils import *
@@ -94,8 +95,13 @@ class KoreaderVocabImporter(GenericImporter):
                     content = f.read().split("LookupHistoryEntry")[1:]
                     for item in content:
                         d.append(slpp.decode(item))
-            entries = [entry['data'].get(next(iter(entry['data']))) for entry in d]
-            entries = [(entry['word'], entry['book_title'], entry['time']) for entry in entries]
+            entries = []
+            for entry in d:
+                if "data" not in entry or len(entry["data"]) != 1:
+                    print(f"Ignoring malformed entry {entry}")
+                    continue
+                data = entry["data"][next(iter(entry["data"]))]
+                entries.append((data["word"], data["book_title"], data["time"]))
             count = 0
             success_count = 0
             for word, booktitle, timestamp in entries:
@@ -106,8 +112,8 @@ class KoreaderVocabImporter(GenericImporter):
 
             self.layout.addRow(QLabel("Lookup history: " + self.histpath))
             self.layout.addRow(QLabel(f"Found {count} lookups in {langcode}, added {success_count} to lookup database."))
-        except Exception as e:
-            print(e)
+        except Exception:
+            print(traceback.format_exc())
             self.layout.addRow(QLabel("Failed to find/read lookup_history.lua. Lookups will not be tracked this time."))
         if items == []:
             return ([], [], [], [])
