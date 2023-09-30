@@ -43,24 +43,14 @@ def findDBpath(path):
 
 def koreader_scandir(path):
     filelist = []
-    epubs = glob.glob(os.path.join(path, "**/*.epub"), recursive=True)
-    for filename in epubs:
-        if os.path.exists(os.path.join(os.path.dirname(filename), 
-                            removesuffix(filename, "epub") + "sdr", 
-                            "metadata.epub.lua")):
-            filelist.append(filename)
-    fb2s = glob.glob(os.path.join(path, "**/*.fb2"), recursive=True)
-    for filename in fb2s:
-        if os.path.exists(os.path.join(os.path.dirname(filename), 
-                          removesuffix(filename, "fb2") + "sdr", 
-                          "metadata.fb2.lua")):
-            filelist.append(filename)
-    fb2zips = glob.glob(os.path.join(path, "**/*.fb2.zip"), recursive=True)
-    for filename in fb2zips:
-        if os.path.exists(os.path.join(os.path.dirname(filename), 
-                          removesuffix(filename, "zip") + "sdr", 
-                          "metadata.zip.lua")):
-            filelist.append(filename)
+    for filetype in ["epub", "fb2", "fb2.zip", "pdf"]:
+        files = glob.glob(os.path.join(path, "**/*." + filetype), recursive=True)
+        for filename in files:
+            if os.path.exists(os.path.join(os.path.dirname(filename),
+                                removesuffix(filename, filetype) + "sdr",
+                                "metadata." + filetype + ".lua")):
+                filelist.append(filename)
+    print(filelist)
     return filelist
 
 def findHistoryPath(path):
